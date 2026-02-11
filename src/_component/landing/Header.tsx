@@ -41,7 +41,7 @@ export default function Header() {
                     {/* promo/links - Desktop */}
                     <div className="hidden md:block">
                         <nav className="flex items-center gap-6 text-sm text-white font-light">
-                            <Link href="#" className="hover:text-[#C9A24D] transition-colors">¿Quiénes Somos?</Link>
+                            <Link href="/quienes-somos" className="hover:text-[#C9A24D] transition-colors">¿Quiénes Somos?</Link>
                             <Link href="#" className="hover:text-[#C9A24D] transition-colors">Categorías</Link>
                             <Link href="#" className="hover:text-[#C9A24D] transition-colors">Ofertas</Link>
                             <Link href="#" className="hover:text-[#C9A24D] transition-colors">Historial</Link>

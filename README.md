@@ -22,6 +22,14 @@ src/
 ├── schemas/                     # Schemas con Zod + React Hook Form
 │
 ├── service/
+│   ├── mutations/
+│   │   └── funciones de react query conectadas a peticiones rest de axios
+│   ├── use-cases/
+│   │   └── funciones conectadas al .env y al axios para peticiones rest
+│   └── api.general.ts => acá guardamos las constantes conectadas al archivo .env 
+└── types/
+    └── todas nuestras interfaces para typescript diferenciadas por entidad o uso
+
 │   ├── mutations/               # React Query mutations + Axios
 │   ├── use-cases/               # Lógica de negocio + conexión .env
 │   └── api.general.ts           # Configuración base y constantes (.env)

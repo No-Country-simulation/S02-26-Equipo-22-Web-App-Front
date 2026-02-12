@@ -4,7 +4,7 @@ import SockJS from 'sockjs-client';
 import { ChatMessage, MessageType, createChatMessage } from '@/types/ChatMessage';
 
 /**
- * Connection states for the WebSocket chat
+ * Estados de conexión para el chat WebSocket
  */
 export type ConnectionState = 'disconnected' | 'connecting' | 'connected' | 'error';
 
@@ -34,13 +34,7 @@ export interface UseChatReturn {
     clearMessages: () => void;
 }
 
-/**
- * Custom hook to manage WebSocket chat connection using STOMP over SockJS
- * 
- * @param horseId - ID of the horse listing for this chat
- * @param backendUrl - Backend WebSocket URL (default: http://localhost:8080)
- * @returns Chat state and control functions
- */
+
 export function useChat(
     horseId: string,
     backendUrl: string = 'http://localhost:8080'
@@ -52,12 +46,11 @@ export function useChat(
     const stompClientRef = useRef<Client | null>(null);
     const currentUsernameRef = useRef<string | null>(null);
 
-    /**
-     * Connect to WebSocket and subscribe to messages
-     */
+
+
     const connect = useCallback(() => {
         if (stompClientRef.current?.connected) {
-            return; // Already connected
+            return; //ya esta conectado
         }
 
         setConnectionState('connecting');
@@ -68,13 +61,13 @@ export function useChat(
             const client = new Client({
                 webSocketFactory: () => new SockJS(`${backendUrl}/ws-horse`),
 
-                // Connection callbacks
+                // Callbacks de conexión
                 onConnect: () => {
                     console.log('WebSocket connected');
                     setConnectionState('connected');
                     setError(null);
 
-                    // Subscribe to public topic for all messages
+                    // Suscribirse al topic público para todos los mensajes
                     client.subscribe('/topic/public', (message: IMessage) => {
                         try {
                             const chatMessage: ChatMessage = JSON.parse(message.body);
@@ -102,7 +95,7 @@ export function useChat(
                     setConnectionState('disconnected');
                 },
 
-                // Reconnect configuration
+                // Configuración de reconexión
                 reconnectDelay: 5000,
                 heartbeatIncoming: 4000,
                 heartbeatOutgoing: 4000,
@@ -118,7 +111,7 @@ export function useChat(
     }, [backendUrl]);
 
     /**
-     * Disconnect from WebSocket
+     * Desconectar del WebSocket
      */
     const disconnect = useCallback(() => {
         if (stompClientRef.current) {
@@ -129,7 +122,7 @@ export function useChat(
     }, []);
 
     /**
-     * Send a chat message
+     * Enviar un mensaje
      */
     const sendMessage = useCallback((content: string) => {
         if (!stompClientRef.current?.connected) {
@@ -142,7 +135,7 @@ export function useChat(
             return;
         }
 
-        // Validate message content
+        // Validar contenido del mensaje
         const trimmedContent = content.trim();
         if (!trimmedContent) {
             setError('El mensaje no puede estar vacío');
@@ -175,7 +168,7 @@ export function useChat(
     }, [horseId]);
 
     /**
-     * Join the chat room
+     * Unirse al chat
      */
     const joinChat = useCallback((username: string) => {
         if (!stompClientRef.current?.connected) {
@@ -189,10 +182,7 @@ export function useChat(
             return;
         }
 
-        if (trimmedUsername.length > 100) {
-            setError('El nombre de usuario no puede exceder 100 caracteres');
-            return;
-        }
+        
 
         try {
             currentUsernameRef.current = trimmedUsername;
@@ -217,7 +207,7 @@ export function useChat(
     }, [horseId]);
 
     /**
-     * Leave the chat room
+     * Salir del chat
      */
     const leaveChat = useCallback(() => {
         if (!stompClientRef.current?.connected || !currentUsernameRef.current) {
@@ -244,13 +234,13 @@ export function useChat(
     }, [horseId]);
 
     /**
-     * Clear all messages
+     * Limpiar todos los mensajes
      */
     const clearMessages = useCallback(() => {
         setMessages([]);
     }, []);
 
-    // Connect on mount, disconnect on unmount
+    // Connect al entrar, disconnect al salir
     useEffect(() => {
         connect();
 

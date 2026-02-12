@@ -1,3 +1,5 @@
+"use client";
+
 import HistoryTimeline from "@/_component/about/HistoryTimeline";
 import LocationSection from "@/_component/about/LocationSection";
 import HeroAbout from "@/_component/about/HeroAbout";
@@ -6,12 +8,11 @@ import TeamGrid from "@/_component/about/TeamGrid";
 import Header from "@/_component/landing/Header";
 import Footer from "@/_component/landing/Footer";
 
-
 export default function QuienesSomos() {
     return (
-        <div>
+        <div className="min-h-screen bg-[#F4F1EC] font-sans">
             <Header />
-            <main className="flex flex-col gap-10">
+            <main>
                 <HeroAbout />
                 <MissionVision />
                 <HistoryTimeline />

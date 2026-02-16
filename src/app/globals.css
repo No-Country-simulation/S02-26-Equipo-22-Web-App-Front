@@ -40,6 +40,36 @@
   text-decoration: none;
   margin-left: 35%;
 }
+
+.login {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.imagen{
+  margin-left: 35%;
+}
+
+.login1{
+  position: relative;
+  z-index: 2;
+  background: white;
+  margin-top: 59%;
+  border-radius: 4%;
+}
+
+
+
+
+
+/*
+.logoDeRegistro {
+  width: 100%;
+  margin-left: 80%;
+  margin-top: -50%;
+}
+  */
 /*
 :root {
   --background: #ffffff;

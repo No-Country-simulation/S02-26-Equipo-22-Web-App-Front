@@ -20,9 +20,9 @@ export default function Home() {
               Financia tu compra
             </div>
           </div>
-          <HorseGrid title="Inspirado en lo que viste" />
         </div>
       </main>
+          <HorseGrid title="Inspirado en lo que viste" />
       <Footer />
     </div>
   )}

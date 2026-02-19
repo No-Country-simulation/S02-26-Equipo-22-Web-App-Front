@@ -6,69 +6,12 @@ import Link from "next/link";
 import { API_URL } from "@/service/api-general";
 import { FormErrors, FormValues, namesFormularie } from "@/mock/mock";
 import { useForm } from "@/hooks/useForm";
-
-const useValidations = (form: FormValues): FormErrors => {
-  const errors: FormErrors = {};
-
-  let regexName = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
-  let regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
-
-
-  if (!form.firstName.trim()) {
-    // errors.firstName = "El campo 'Nombre' es requerido";
-    toast.error("El campo 'Nombre' es requerido");
-  } else if (!regexName.test(form.firstName.trim())) {
-    errors.firstName = "El campo 'Nombre' sólo acepta letras y espacios en blanco";
-    toast.error("El campo 'Nombre' sólo acepta letras y espacios en blanco");
-  }
-
-  if (!form.secondSurname.trim()) {
-    // errors.secondSurname = "El campo 'Apellido' es requerido";
-    toast.error("El campo 'Apellido' es requerido");
-  } else if (!regexName.test(form.secondSurname.trim())) {
-    errors.secondSurname = "El campo 'Apellido' sólo acepta letras y espacios en blanco";
-    toast.error("El campo 'Apellido' sólo acepta letras y espacios en blanco");
-  }
-
-  if (!form.email.trim()) {
-    // errors.email = "El campo 'Email' es requerido";
-    toast.error("El campo 'Email' es requerido");
-  } else if (!regexEmail.test(form.email.trim())) {
-    errors.email = "Completa correctamente el campo 'Email'";
-    toast.error("El campo 'Email' es incorrecto");
-  }
-
-  if (!form.password) {
-    // errors.password = "El campo 'Contraseña' es requerido";
-    toast.error("El campo 'Contraseña' es requerido");
-  } else if (form.password.length < 6) {
-    errors.password = "La contraseña debe tener al menos 6 caracteres";
-    toast.error("La contraseña debe tener al menos 6 caracteres");
-  }
-
-  if (!form.secondPassword) {
-    // errors.secondPassword = "El campo 'Repite la contraseña' es requerido";
-    toast.error("El campo 'Repite la contraseña' es requerido");
-  } else if (form.password !== form.secondPassword) {
-    errors.secondPassword = "Las contraseñas no coinciden";
-    toast.error("Las contraseñas no coinciden");
-  }
-
-  return errors;
-};
-
-
-
-
+import useValidations from "@/hooks/useValidations";
 
 export default function Register() {
 
-
-  // const [form, setForm] = useState<typeof namesFormularie>(namesFormularie);
   const [showPassword, setShowPassword] = useState(false);
   const [showSecondPassword, setShowSecondPassword] = useState(false);
-  // const [errors, setErrors] = useState({});
-  // const [loading, setLoading] = useState(false);
 
   const {
     errors,
@@ -80,106 +23,7 @@ export default function Register() {
     response
    } = useForm(namesFormularie, useValidations)
 
-  // const handleChange = (field: keyof typeof namesFormularie) => (e: React.ChangeEvent<HTMLInputElement>) => {
 
-  //   setForm({
-  //     ...form,
-  //     [field]: e.target.value
-  //   });
-  // };
-
-  // const handleBlur = (e) => {
-  //   handleChange(e);
-  //   setErrors(validateForm(form));
-  // };
-
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   // const formElement = e.currentTarget;
-  //   // const formData = new FormData(formElement);
-
-  //   // const values = {
-  //   //   firstName: (formData.get("name") ?? "") as string,
-  //   //   secondSurname: (formData.get("surname") ?? "") as string,
-  //   //   email: (formData.get("email") ?? "") as string,
-  //   //   password: (formData.get("password") ?? "") as string,
-  //   //   secondPassword: (formData.get("secondPassword") ?? "") as string,
-  //   // };
-
-
-  //   // if (
-  //   //   !values.firstName?.trim() ||
-  //   //   !values.secondSurname?.trim() ||
-  //   //   !values.email?.trim() ||
-  //   //   !values.password ||
-  //   //   !values.secondPassword
-  //   // ) {
-  //   //   errors.firstName = "Completa el campo vacio"
-  //   //   errors.secondSurname = "Completa el campo vacio"
-  //   //   errors.password = "Completa el campo vacio"
-  //   //   errors.secondPassword = "Completa el campo vacio"
-  //   //   errors.email = "Completa el campo vacio"
-  //   //   toast.error("faltan campos que completar");
-  //   //   return;
-  //   // }
-  //   // if (!values.firstName.trim()) {
-  //   //   errors.firstName = "El campo 'Nombre' es requerido";
-  //   // } else if (!regexName.test(form.firstName.trim())) {
-  //   //   errors.firstName = "El campo 'Nombre' sólo acepta letras y espacios en blanco";
-  //   // }
-
-  //   // if (!form.secondSurname.trim()) {
-  //   //   errors.secondSurname = "El campo 'Apellido' es requerido";
-  //   // } else if (!regexName.test(form.secondSurname.trim())) {
-  //   //   errors.secondSurname = "El campo 'Apellido' sólo acepta letras y espacios en blanco";
-  //   // }
-
-  //   // if (regexEmail.test(values.email)) {
-  //   //   errors.email = "El campo 'Email' es incorrecto";
-  //   //   toast.error("Email inválida");
-  //   //   return;
-  //   // }
-
-  //   // if (values.password.length < 6) {
-  //   //   errors.password = "La contraseña debe tener al menos 6 caracteres";
-  //   //   toast.error("contraseña muy corta");
-  //   //   return;
-  //   // }
-
-  //   // if (values.password !== values.secondPassword) {
-  //   //   errors.secondPassword = "Las contraseñas no coinciden";
-  //   //   toast.error("La contraseña no coincide");
-  //   //   return;
-  //   // }
-  //   // console.log(errors);
-  //   // return errors
-  //   console.log(e);
-
-
-  //   // toast.success("Cuenta creada correctamente");
-
-
-  //   // try {
-  //   //   const response = await fetch(API_URL + "/api/register", {
-  //   //     method: "POST",
-  //   //     body: formData,
-  //   //   });
-
-  //   //   if (!response.ok) {
-  //   //     const error = await response.json().catch(() => ({}));
-  //   //     toast.error(error.message ?? "Error al crear la cuenta");
-  //   //     return;
-  //   //   }
-
-  //   //   toast.success("Creación de cuenta exitosa!");
-  //   // } catch {
-  //   //   toast.error("Error de conexión");
-  //   // }
-  //   // setForm(initialForm);
-  // };
-  // console.log("loading: "+  loading);
-  // console.log("response: "+ response);
   return (
     <div className="div_bg-colorheader ">
       <Toaster position="top-right" />

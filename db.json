@@ -1,20 +1,14 @@
 {
   "users": [
+   
+   
     {
-      "firstName": "Lautaro ",
-      "secondSurname": "Di Salvo",
-      "email": "vkmdfvkmdf@gmail.com",
-      "password": "vdvdfvfd4544",
-      "secondPassword": "vdvdfvfd4544",
-      "id": 1
-    },
-    {
-      "firstName": "Lautaro ",
-      "secondSurname": "Di Salvo",
-      "email": "vkmdfvkmdf@gmail.com",
-      "password": "vdvdfvfd4544",
-      "secondPassword": "vdvdfvfd4544",
-      "id": 2
+      "firstName": "Lautaro",
+      "secondSurname": "Dibgnnjd",
+      "email": "hola321@gmail.com",
+      "password": "vfdvfd654",
+      "secondPassword": "vfdvfd654",
+      "id": 3
     }
   ]
 }

@@ -37,7 +37,7 @@ const LocationSection = () => {
                 {
                   icon: Mail,
                   title: "Email",
-                  detail: "contacto@horsetrust.com",
+                  detail: "contacto@horset.com",
                 },
                 {
                   icon: Clock,

@@ -1,60 +1,57 @@
+import Link from 'next/link';
 import Image from 'next/image';
 
-export default function HorseGrid({ title }: { title: string }) {
-    // Placeholder data
-    const horses = [
-        {
-            id: 1,
-            name: 'Pura Sangre de Carrera - 3 Años',
-            price: 'USD 5,500',
-            image: "/images/prueba.jpg",
-            installments: 'en 12x USD 458',
-            shipping: 'Envío gratis'
-        },
-        {
-            id: 2,
-            name: 'Caballo Criollo - Manso de Andar',
-            price: 'ARS 2,800,000',
-            image: '/images/prueba.jpg',
-            installments: 'en 6x sin interés',
-            shipping: ''
-        },
-        {
-            id: 3,
-            name: 'Yegua Polo Argentino - Jugadora',
-            price: 'USD 12,000',
-            image: '/images/prueba.jpg',
-            installments: 'Plan Canje',
-            shipping: 'Envío gratis'
-        },
-        {
-            id: 4,
-            name: 'Potrillo Cuarto de Milla - Destete',
-            price: 'USD 3,200',
-            image: '/images/prueba.jpg',
-            installments: 'en 12x USD 266',
-            shipping: ''
-        },
-        {
-            id: 5,
-            name: 'Caballo de Salto - Iniciado',
-            price: 'USD 8,000',
-            image: '/images/prueba.jpg',
-            installments: 'en 12x USD 666',
-            shipping: 'Llega mañana'
-        },
-    ];
+import { products as defaultProducts } from '@/data/products';
+
+// Definición de la estructura de datos para un Producto (Caballo)
+interface Product {
+    id: number;
+    name: string;
+    price: string;
+    image: string;
+    installments: string;
+    shipping: string;
+    category?: string;
+}
+
+// Props del componente HorseGrid
+// - title: Título de la sección
+// - products: (Opcional) Array de productos a mostrar. Si no se pasa, usa los default.
+// - viewMoreLink: (Opcional) Link al que redirige 'Ver más'
+interface HorseGridProps {
+    title: string;
+    products?: Product[];
+    viewMoreLink?: string;
+}
+
+// Componente HorseGrid (Cuadrícula de Caballos)
+// Muestra una lista de productos en formato de grid/tarjetas
+export default function HorseGrid({ title, products = defaultProducts.slice(0, 5), viewMoreLink }: HorseGridProps) {
+    // Determina qué productos mostrar: los pasados por props o los predeterminados (primeros 5)
+    const itemsToDisplay = products;
 
     return (
         <section className="bg-gray-100 py-8">
             <div className="container mx-auto px-4">
+                {/* Cabecera de la sección con título, línea separadora y enlace 'Ver más' */}
                 <div className="flex items-center gap-4 mb-6">
-
+                    <h2 className="text-2xl text-gray-800 font-light">{title}</h2>
+                    <div className="h-px bg-gray-200 flex-1"></div>
+                    {viewMoreLink ? (
+                        <Link href={viewMoreLink} className="text-sm text-[#C9A24D] hover:underline">
+                            Ver más
+                        </Link>
+                    ) : (
+                        <a href="#" className="text-sm text-[#C9A24D] hover:underline">Ver más</a>
+                    )}
                 </div>
 
+                {/* Grid Responsivo: 1 columna en móvil, hasta 5 en pantallas grandes */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    {horses.map((horse) => (
+                    {itemsToDisplay.map((horse) => (
+                        // Tarjeta de Producto individual
                         <div key={horse.id} className="bg-white rounded-md shadow-sm hover:shadow-[0_4px_15px_rgba(201,162,77,0.5)] transition-shadow duration-300 border border-gray-100 cursor-pointer overflow-hidden flex flex-col">
+                            {/* Imagen del caballo */}
                             <div className="relative h-56 w-full border-b border-gray-100">
                                 <img
                                     src={horse.image}
@@ -62,6 +59,7 @@ export default function HorseGrid({ title }: { title: string }) {
                                     className="w-full h-full object-cover"
                                 />
                             </div>
+                            {/* Información del producto (Precio, Cuotas, Envío, Nombre) */}
                             <div className="p-4 flex flex-col gap-1 flex-1">
                                 <div className="mb-1">
                                     <span className="text-xl md:text-2xl text-gray-800 font-normal">{horse.price}</span>

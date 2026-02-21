@@ -1,3 +1,4 @@
+"use client"
 import { useState } from "react";
 // import { helpHttp } from "../helpers/helpHttp";
 import { namesFormularie } from "@/types/types";

@@ -1,11 +1,12 @@
 "use client";
 
-import Header from "@/_component/landing/Header";
-import Footer from "@/_component/landing/Footer";
-import WelcomeScreen from "@/_component/landing/WelcomeScreen";
-import { useState, useEffect } from "react";
-import Hero from "@/_component/landing/Hero";
-import HorseGrid from "@/_component/landing/HorseGrid";
+import Hero from "@/components/landing/Hero";
+import WelcomeScreen from "@/components/landing/WelcomeScreen";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import { useState } from "react";
+
+
 
 export default function EquinoLayout({
     children,

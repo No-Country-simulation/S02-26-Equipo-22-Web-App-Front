@@ -4,7 +4,7 @@ import { ContextData } from "../context/UseContextProvider"
 import { horses } from "@/mock/mock"
 import {  HorsesEntity } from "@/types/types"
 
-export const DataComponentFilter = () => { 
+export const ConditionsFilter = () => { 
     const {filters, setFilters } = useContext(ContextData)
 
     const filterHorse = (data: any) => {

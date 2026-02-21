@@ -155,10 +155,10 @@ export default function Header() {
 
                     {/* Acciones de usuario - Desktop */}
                     <div className="hidden md:flex items-center gap-5 text-sm text-white">
-                        <Link href="#" className="hover:text-[#C9A24D] transition-colors">
+                        <Link href="/register" className="hover:text-[#C9A24D] transition-colors">
                             Crea tu cuenta
                         </Link>
-                        <Link href="#" className="font-semibold hover:text-[#C9A24D] transition-colors">
+                        <Link href="/login" className="font-semibold hover:text-[#C9A24D] transition-colors">
                             Ingresá
                         </Link>
                         <Link href="#" className="hover:text-[#C9A24D] transition-colors">

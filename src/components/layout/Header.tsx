@@ -15,7 +15,7 @@ const navLinksLeft = [
 const navLinksRight = [
     { href: "/quienes-somos", label: "Quiénes Somos" },
     { href: "/ayuda", label: "Ayuda" },
-    { href: "/LocationSection", label: "Contacto" },
+    { href: "/contacto", label: "Contacto" },
 ];
 
 const categorias = [

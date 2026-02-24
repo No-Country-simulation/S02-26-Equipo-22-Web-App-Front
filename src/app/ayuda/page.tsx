@@ -88,7 +88,7 @@ export default function HelpPage() {
     <div
       style={{
         minHeight: "100vh",
-        backgroundColor: "#F4F1EC",
+        backgroundColor: "#F3F4F6",
         fontFamily: "'Georgia', 'Times New Roman', serif",
         color: "#E8E0D0",
         padding: "0",

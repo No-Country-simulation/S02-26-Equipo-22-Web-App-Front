@@ -11,13 +11,20 @@ export const options = [
     { href: "#", label: "Ingresa", className: "font-medium hover:text-blue-600" },
     { href: "#", label: "Mis compras", className: "font-medium hover:text-blue-600" },
 ]
-export const namesFormularie = {
-  firstName: "",
-  secondSurname: "",
-  email: "",
-  password: "",
-  secondPassword: "",
+export const namesFormulariRegister = {
+    dni: "",
+    name: "",
+    lastname: "",
+    email: "",
+    password: "",
+    rol: ""
 };
+export const namesFormulariLogin = {
+    email: "",
+    password: "",
+};
+
+
 export const horses = [
     {
         id: 1,
@@ -108,6 +115,8 @@ export const horses = [
         shipping: ''
     }
 ];
-export type FormValues = typeof namesFormularie;
+export type FormValuesRegister = typeof namesFormulariRegister;
+export type FormValuesLogin = typeof namesFormulariLogin;
 
-export type FormErrors = Partial<Record<keyof FormValues, string>>;
+export type FormErrorsRegister = Partial<Record<keyof FormValuesRegister, string>>;
+export type FormErrorsLogin = Partial<Record<keyof FormValuesLogin, string>>;

@@ -1,9 +1,9 @@
 "use client"
 import { horses } from '@/mock/mock';
-import { DataComponentFilter } from '../filters/nav-filter';
-import { HorsesEntity } from '@/types/types';
+// import { DataComponentFilter } from '../filters/nav-filter';
+// import { HorsesEntity } from '@/types/types';
 
-export default function HorseGrid({title}:{title: React.ReactNode}) {
+export default function HorseGrid() {
     // Placeholder data
    
 //  const horsesFilter: HorsesEntity[] = DataComponentFilter().filterHorse(horses)

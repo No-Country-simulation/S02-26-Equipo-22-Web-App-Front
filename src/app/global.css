@@ -1,15 +1,13 @@
 @import "tailwindcss";
 
-.header_register {
+.header_begin-app {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  height: 61dvh;
+  align-items: stretch;
+  height: 81dvh;
   position: relative;
   width: 100%;
-  article{
-    width: 50%;
-  }
+  margin: 0 auto;
 }
 
 .g-button{
@@ -25,13 +23,29 @@
 
   }
 }
-
-.imagenDeCaballos {
-
+.article_img_horses {
+  flex: 1;
   height: 100%;
-  width: 100%;
+  display: flex;
 }
 
+.article_img_horses  {
+  .img-horses{
+  
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* fill the right half without distortion */
+
+  }
+}
+/* .image-horses{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  height: auto;
+} */
 form{
   display: flex ;
   flex-direction: column;
@@ -41,7 +55,8 @@ form{
 .article_div_form {
   display: flex;
   justify-content: center;
-  width: 100%;
+  align-items: center;
+  flex: 1;
 }
 
 .div_formulario {
@@ -63,7 +78,6 @@ form{
   text-align: center;
   padding: 1rem !important;
   text-decoration: underline;
-  /* margin-left: 35%; */
 }
 
 
@@ -79,9 +93,7 @@ form{
   justify-content: space-around;
 }
 
-.article_img_login{
-  
-}
+
 .login1{
   position: relative;
   z-index: 2;
@@ -123,13 +135,7 @@ form{
    color: white;
  }
  
- .link {
-   color: black;
-   text-align: center;
-   font-family: Arial, Helvetica, sans-serif;
-   text-decoration: none;
-   margin-left: 35%;
- }
+
  
  .login {
    display: flex;

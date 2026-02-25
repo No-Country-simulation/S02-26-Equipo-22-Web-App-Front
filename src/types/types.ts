@@ -6,13 +6,19 @@ export interface ChildrenType {
   children: React.ReactNode;
 }
 
-export interface namesFormularie {
-  firstName: string;
-  secondSurname: string;
+export interface namesFormulariRegister {
+  dni: string;
+  name: string;
+  lastname: string;
   email: string;
   password: string;
-  secondPassword: string;
+  rol: string;
 }
+export interface namesFormulariLogin {
+  email: string;
+  password: string;
+}
+
 
 export interface FilterHorses {
   breed: string;
@@ -39,4 +45,24 @@ export interface HorsesEntity {
   installments: string;
   // velocidad de envios
   shipping: string;
+}
+
+
+export interface LoginResponseType {
+  access_token: string
+  token_type: string
+  expires_in: number
+  user: User
+}
+
+export interface User {
+  id: number
+  dni: string
+  name: string
+  last_name: string
+  email: string
+  number: any
+  address: any
+  rol: string
+  created_at: string
 }

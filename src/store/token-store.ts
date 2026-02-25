@@ -13,14 +13,14 @@ interface Tokens{
    
   const tokenStorage =
     typeof window !== "undefined"
-      ? JSON.parse(window.localStorage.getItem("token-login")!)
+      ? JSON.parse(window.localStorage.getItem("access_token")!)
       : "";
   
   export const authStore = create<store>()((set) => ({
     token: tokenStorage,
     setToken: (token: Tokens) => set(() => ({ token })),
     removeToken() {
-      window.localStorage.removeItem("token-login");
+      window.localStorage.removeItem("access_token");
       return { token: null };
     },
   }));

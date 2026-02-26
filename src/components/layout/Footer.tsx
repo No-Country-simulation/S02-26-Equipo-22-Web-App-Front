@@ -7,7 +7,7 @@ export default function Footer() {
                         <h4 className="font-semibold text-gray-800">Acerca de</h4>
                         <a href="/quienes-somos" className="text-sm text-gray-500 hover:text-gray-800">EQUI HORSE</a>
                         <a href="#" className="text-sm text-gray-500 hover:text-gray-800">Tendencias</a>
-                        <a href="#" className="text-sm text-gray-500 hover:text-gray-800">Sustentabilidad</a>
+                        <a href="/sustentabilidad" className="text-sm text-gray-500 hover:text-gray-800">Sustentabilidad</a>
                     </div>
                     <div className="flex flex-col gap-3">
                         <h4 className="font-semibold text-gray-800">Otros sitios</h4>
@@ -17,8 +17,8 @@ export default function Footer() {
                     </div>
                     <div className="flex flex-col gap-3">
                         <h4 className="font-semibold text-gray-800">Ayuda</h4>
-                        <a href="#" className="text-sm text-gray-500 hover:text-gray-800">Resolución de problemas</a> {/*al chat*/ }
-                        <a href="#" className="text-sm text-gray-500 hover:text-gray-800">Seguridad</a>
+                        <a href="/resolucion-de-problemas" className="text-sm text-gray-500 hover:text-gray-800">Resolución de problemas</a> {/*al chat*/ }
+                        <a href="/seguridad" className="text-sm text-gray-500 hover:text-gray-800">Seguridad</a>
                     </div>
                     <div className="flex flex-col gap-3">
                         <h4 className="font-semibold text-gray-800">Redes sociales</h4>

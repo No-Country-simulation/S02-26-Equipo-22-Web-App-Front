@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./global.css";
-import ContextProvider from "@/components/context/TanstackQueryProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { UseContextProvider } from "@/components/context/UseContextProvider";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,10 +30,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html>
-      <UseContextProvider>
-        <body>{children}</body>
-      </UseContextProvider>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <UseContextProvider>
+          <div className="flex flex-col min-h-screen">
+            <main className="flex-grow">
+              {children}
+            </main>
+            <ChatWidget />
+          </div>
+        </UseContextProvider>
+      </body>
     </html>
   );
 }

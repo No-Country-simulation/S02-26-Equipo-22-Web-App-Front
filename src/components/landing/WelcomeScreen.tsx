@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 
 export default function WelcomeScreen({ onComplete }: { onComplete: () => void }) {
     const [isVisible, setIsVisible] = useState(true);
@@ -10,12 +9,12 @@ export default function WelcomeScreen({ onComplete }: { onComplete: () => void }
         // Start fade out after 2.5 seconds
         const timer = setTimeout(() => {
             setIsVisible(false);
-        }, 2500);
+        }, 1000);
 
         // Notify parent that animation is done after fade out transition (e.g. 500ms)
         const cleanup = setTimeout(() => {
             onComplete();
-        }, 3500);
+        }, 800);
 
         return () => {
             clearTimeout(timer);

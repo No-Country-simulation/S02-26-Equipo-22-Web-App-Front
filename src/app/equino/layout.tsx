@@ -1,7 +1,6 @@
 "use client";
 
 import Hero from "@/components/landing/Hero";
-import HorseGrid from "@/components/landing/HorseGrid";
 import WelcomeScreen from "@/components/landing/WelcomeScreen";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
@@ -22,8 +21,8 @@ export default function EquinoLayout({
 
             <div className={`transition-opacity duration-1000 ${showWelcome ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`}>
                 <Header />
-                {/* <Hero></Hero> */}
-                <HorseGrid></HorseGrid>
+                
+                
                 <main>
                     {children}
                 </main>

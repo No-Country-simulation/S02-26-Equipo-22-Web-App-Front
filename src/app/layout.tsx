@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./global.css";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
 import { UseContextProvider } from "@/components/context/UseContextProvider";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 

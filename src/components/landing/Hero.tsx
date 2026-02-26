@@ -10,7 +10,7 @@ const SLIDES = [
         title: "Los Mejores Equinos",
         subtitle: "Encuentra la calidad, raza y linaje que buscas",
         highlight: "en un solo lugar",
-        image: "photo-1547581849-38ba650ad0de_ng9oyi",
+        image: "photo-1547581849-38ba650ad0de_ng9oyi", //public ID de cloudinary
         alt: "Caballo de carrera compitiendo"
     },
     {
@@ -28,7 +28,18 @@ const SLIDES = [
         highlight: "internacionales",
         image: "cld-sample-3",
         alt: "Caballo en el campo"
+    },
+    {
+        id: 4,
+        title: "Crianza de Excelencia",
+        subtitle: "Genética premium certificada por expertos",
+        highlight: "internacionales",
+        image: "cld-sample-3",
+        alt: "Caballo en el campo"
     }
+
+
+
 ];
 
 export default function Hero() {

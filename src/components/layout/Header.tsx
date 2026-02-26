@@ -6,16 +6,17 @@ import { useState, useEffect, useRef } from 'react';
 import { Search, Menu, User, Settings, MessageSquare, Heart } from 'lucide-react';
 import { useChatStore } from '@/store/useChatStore';
 
+const path = "/equino"
 const navLinksLeft = [
-    { href: "/catalogo", label: "Catálogo" },
-    { href: "/novedades", label: "Novedades" },
-    { href: "/vender", label: "Vender" },
+    { href: path + "/catalogo", label: "Catálogo" },
+    { href: path + "/novedades", label: "Novedades" },
+    { href: path + "/vender", label: "Vender" },
 ];
 
 const navLinksRight = [
-    { href: "/quienes-somos", label: "Quiénes Somos" },
-    { href: "/ayuda", label: "Ayuda" },
-    { href: "/contacto", label: "Contacto" },
+    { href: path + "/quienes-somos", label: "Quiénes Somos" },
+    { href: path + "/ayuda", label: "Ayuda" },
+    { href: path + "/contacto", label: "Contacto" },
 ];
 
 
@@ -73,7 +74,7 @@ export default function Header() {
             <div className="w-full px-6 py-3">
                 <div className="flex items-center justify-between gap-4">
                     {/* Logo */}
-                    <Link href="/" className="flex-shrink-0 flex items-center gap-2 transition-transform hover:scale-[1.02] duration-300">
+                    <Link href="/equino" className="flex-shrink-0 flex items-center gap-2 transition-transform hover:scale-[1.02] duration-300">
                         <img
                             src="/images/LOGO.png"
                             alt="HorseTrust Logo"
@@ -93,10 +94,10 @@ export default function Header() {
 
                     {/* Acciones de usuario - Desktop */}
                     <div className="hidden md:flex items-center gap-5 text-sm text-white">
-                        <Link href="#" className="hover:text-[#C9A24D] transition-colors">
+                        <Link href="/register" className="hover:text-[#C9A24D] transition-colors">
                             Crea tu cuenta
                         </Link>
-                        <Link href="#" className="font-semibold hover:text-[#C9A24D] transition-colors">
+                        <Link href="/login" className="font-semibold hover:text-[#C9A24D] transition-colors">
                             Ingresá
                         </Link>
 

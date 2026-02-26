@@ -1,8 +1,7 @@
 "use client";
 
 import { MapPin, Phone, Mail, Clock, ArrowRight } from 'lucide-react';
-import { useScrollReveal } from '@/service/hooks/useScrollReveal';
-
+import  {useScrollReveal} from "@/hooks/useScrollReveal"
 const LocationSection = () => {
   const sectionRef = useScrollReveal<HTMLElement>();
 

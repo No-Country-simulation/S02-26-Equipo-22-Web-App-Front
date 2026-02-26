@@ -169,7 +169,7 @@ export default function Catalogo() {
                     <main className="lg:w-3/4">
                         <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'}`}>
                             {HORSES.map((horse) => (
-                                <Link href={`/catalogo/${horse.id}`} key={horse.id} className="block">
+                                <Link href={`/equino/catalogo/${horse.id}`} key={horse.id} className="block">
                                     <div className={`bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 overflow-hidden group cursor-pointer ${viewMode === 'list' ? 'flex' : 'h-full flex flex-col'}`}>
                                         <div className={`${viewMode === 'list' ? 'w-1/3' : 'h-64'} relative border-b border-gray-100`}>
                                             <img

@@ -3,8 +3,11 @@
 import Hero from "@/components/landing/Hero";
 import Categories from "@/components/landing/Categories";
 import HorseGrid from "@/components/landing/HorseGrid";
+import { useState } from "react";
 
 export default function Home() {
+  const [showWelcome, setShowWelcome] = useState(true);
+
   return (
     <div className="min-h-screen bg-[#F4F1EC] font-sans">
       <Hero />
@@ -21,5 +24,4 @@ export default function Home() {
         <HorseGrid title="Inspirado en lo que viste" />
       </div>
     </div>
-  );
-}
+  )}

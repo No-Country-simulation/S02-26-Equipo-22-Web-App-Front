@@ -1,7 +1,7 @@
 "use client";
 
 import { Linkedin, Twitter, Mail } from 'lucide-react';
-import { useScrollReveal } from '@/service/hooks/useScrollReveal';
+import  {useScrollReveal} from "@/hooks/useScrollReveal"
 
 const TeamGrid = () => {
   const sectionRef = useScrollReveal<HTMLElement>();

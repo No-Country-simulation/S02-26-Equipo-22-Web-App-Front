@@ -5,7 +5,7 @@ export default function Footer() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
                     <div className="flex flex-col gap-3">
                         <h4 className="font-semibold text-gray-800">Acerca de</h4>
-                        <a href="/quienes-somos" className="text-sm text-gray-500 hover:text-gray-800">EQUI HORSE</a>
+                        <a href="/equino/quienes-somos" className="text-sm text-gray-500 hover:text-gray-800">EQUI HORSE</a>
                         <a href="#" className="text-sm text-gray-500 hover:text-gray-800">Tendencias</a>
                         <a href="/sustentabilidad" className="text-sm text-gray-500 hover:text-gray-800">Sustentabilidad</a>
                     </div>

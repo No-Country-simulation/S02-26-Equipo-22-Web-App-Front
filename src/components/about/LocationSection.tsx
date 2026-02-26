@@ -7,7 +7,7 @@ const LocationSection = () => {
   const sectionRef = useScrollReveal<HTMLElement>();
 
   return (
-    <section ref={sectionRef} className="scroll-reveal py-24 bg-[#F9F7F5]">
+    <section id="contacto" ref={sectionRef} className="scroll-reveal py-24 bg-[#F9F7F5]">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center mb-16">
           <div className="w-12 h-0.5 bg-[#C9A24D] mx-auto mb-6" />

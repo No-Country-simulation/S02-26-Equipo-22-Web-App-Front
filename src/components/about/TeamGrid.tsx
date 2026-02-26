@@ -71,7 +71,7 @@ const TeamGrid = () => {
                 <div className="flex gap-4 pt-4 border-t border-gray-200">
                   {/* LinkedIn */}
                   <a
-                    href="https://www.linkedin.com/in/tu-usuario"
+                    href="https://www.linkedin.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-400 hover:text-[#0077B5] transition-colors duration-300"
@@ -81,7 +81,7 @@ const TeamGrid = () => {
 
                   {/* Twitter / X */}
                   <a
-                    href="https://x.com/tu-usuario"
+                    href="https://x.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-400 hover:text-[#1DA1F2] transition-colors duration-300"

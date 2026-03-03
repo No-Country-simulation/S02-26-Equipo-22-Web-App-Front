@@ -1,6 +1,5 @@
 "use client"
 import { useState } from "react";
-// import { helpHttp } from "../helpers/helpHttp";
 import { LoginResponseType, namesFormulariLogin } from "@/types/types";
 import { endpoint_login } from "@/service/api-general";
 import { useRouter } from "next/navigation";
@@ -25,7 +24,7 @@ export const useFormLogin = (namesFormulariLogin: namesFormulariLogin, validateF
       [e.target.name]: e.target.value,
     });
   };
- 
+
 
   const handleBlur = (e: any) => {
     handleChange(e);
@@ -51,12 +50,9 @@ export const useFormLogin = (namesFormulariLogin: namesFormulariLogin, validateF
         console.log(req.status);
         if (req.status === 200) {
           console.log("peticion exitosa" + req.status);
-          localStorage.setItem(
-            "access_token",
-            JSON.stringify({
-              access_token: res.access_token
-            })
-          );
+          authStore.getState().setToken({
+            access_token: res.access_token
+          });
           router.push("/equino")
         } else if (req.status === 403) {
           console.log("hubo un fallo en la peticion", + req.status);

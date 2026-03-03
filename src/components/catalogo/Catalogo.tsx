@@ -1,26 +1,91 @@
 "use client";
 
-import { useState } from 'react';
-import { Filter, Grid, List as ListIcon, ChevronDown, Search } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Filter, Grid, List as ListIcon, ChevronDown, Search, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
-import { HORSES } from '@/mock/mockHorses';
+import Pagination from '@/components/ui/Pagination';
+import CustomSelect from '@/components/ui/CustomSelect';
+import HorseCard from '@/components/ui/HorseCard';
 
-const FILTERS = [
-    { title: "Razas", items: ["Pura Sangre", "Cuarto de Milla", "Árabe", "Criollo", "Frisón"] },
-    { title: "Disciplinas", items: ["Salto", "Doma", "Polo", "Endurance", "Carreras"] },
-    { title: "Ubicación", items: ["Buenos Aires", "Córdoba", "Santa Fe", "Mendoza", "Salta"] },
-];
+import { useFavoritesStore } from '@/store/useFavoritesStore';
+import { useCatalogStore } from '@/store/useCatalogStore';
+import { Heart, Loader2 } from 'lucide-react';
 
-export default function Catalogo() {
+import { horseService } from '@/services/horseService';
+import { Horse } from '@/types/horse';
+
+import { DISCIPLINE_TRANSLATIONS, translateDiscipline } from '@/utils/translations';
+import { CATALOG_FILTERS } from '@/constants/catalogFilters';
+
+interface CatalogoProps {
+    showFavoritesOnly?: boolean;
+}
+
+export default function Catalogo({ showFavoritesOnly = false }: CatalogoProps) {
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+    const [dateSort, setDateSort] = useState("");
+    const [priceSort, setPriceSort] = useState("");
+    const [expandedFilters, setExpandedFilters] = useState<string[]>(CATALOG_FILTERS.map(f => f.title));
+    const [horses, setHorses] = useState<Horse[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const [dateLabel, setDateLabel] = useState("Fecha de publicación");
-    const [priceLabel, setPriceLabel] = useState("Precio");
+    // Global state Zustand
+    const {
+        currentPage,
+        pageSize,
+        totalPages,
+        totalElements,
+        filters,
+        setPage,
+        setFilters,
+        resetFilters,
+        setTotalPages,
+        setTotalElements
+    } = useCatalogStore();
 
-    const [expandedFilters, setExpandedFilters] = useState<string[]>(FILTERS.map(f => f.title));
-    const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+    const savedHorses = useFavoritesStore((state) => state.savedHorses);
 
-    const toggleFilter = (title: string) => {
+
+    useEffect(() => {
+        const fetchHorses = async () => {
+            setIsLoading(true);
+            try {
+                const apiFilters: Record<string, any> = {};
+
+                if (filters.breeds && filters.breeds.length > 0) {
+                    apiFilters.breed = filters.breeds[0];
+                }
+                if (filters.disciplines && filters.disciplines.length > 0) {
+                    const selectedTranslation = filters.disciplines[0];
+                    const enumKey = Object.keys(DISCIPLINE_TRANSLATIONS).find(k => DISCIPLINE_TRANSLATIONS[k] === selectedTranslation);
+                    apiFilters.discipline = enumKey || selectedTranslation;
+                }
+                if (filters.locations && filters.locations.length > 0) {
+                    apiFilters.location = filters.locations[0];
+                }
+                if (filters.verification && filters.verification.length > 0) {
+                    apiFilters.isVerified = filters.verification[0] === 'Verificado';
+                }
+
+                const data = await horseService.getHorses(currentPage, pageSize, apiFilters);
+                setHorses(data.content);
+                setTotalElements(data.totalElements);
+                setTotalPages(data.totalPages);
+            } catch (error) {
+                console.error("Error fetching horses", error);
+                setHorses([]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        // Debounce or just call it directly since React handles state batches
+        fetchHorses();
+    }, [currentPage, pageSize, filters, setTotalElements, setTotalPages]);
+
+    const filteredHorses = showFavoritesOnly ? horses.filter(h => savedHorses.includes(h.id)) : horses;
+
+    const toggleFilterSection = (title: string) => {
         setExpandedFilters(prev =>
             prev.includes(title)
                 ? prev.filter(t => t !== title)
@@ -28,19 +93,17 @@ export default function Catalogo() {
         );
     };
 
-    const handleFilterChange = (item: string) => {
-        setSelectedFilters(prev =>
-            prev.includes(item)
-                ? prev.filter(i => i !== item)
-                : [...prev, item]
-        );
+    const handleFilterChange = (key: string, item: string) => {
+        const currentItems = (filters as any)[key] as string[];
+        const newItems = currentItems.includes(item)
+            ? []
+            : [item];
+
+        setFilters({ [key]: newItems });
     };
 
-    const clearFilters = () => {
-        setSelectedFilters([]);
-        // Optional: Also clear the top selects if desired:
-        // setDateLabel("Fecha de publicación");
-        // setPriceLabel("Precio");
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFilters({ searchQuery: e.target.value });
     };
 
     return (
@@ -49,13 +112,21 @@ export default function Catalogo() {
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                     <div>
-                        <h1 className="text-3xl font-bold text-[#1F140D]">Catálogo de Equinos</h1>
-                        <p className="text-gray-600">Explora los mejores ejemplares disponibles.</p>
+                        <h1 className="text-3xl font-bold text-[#1F140D]">
+                            {showFavoritesOnly ? 'Mis Caballos Guardados' : 'Catálogo de Equinos'}
+                        </h1>
+                        <p className="text-gray-600">
+                            {showFavoritesOnly
+                                ? 'Tus ejemplares favoritos guardados para ver más tarde.'
+                                : 'Explora los mejores ejemplares disponibles.'}
+                        </p>
                     </div>
                     <div className="hidden md:flex flex-1 max-w-2xl mx-6">
                         <div className="relative w-full">
                             <input
                                 type="text"
+                                value={filters.searchQuery}
+                                onChange={handleSearchChange}
                                 placeholder="Buscar caballos, razas y más..."
                                 className="w-full h-10 px-4 pr-10 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#C9A24D]/50 focus:border-[#C9A24D] text-gray-700 placeholder-gray-400 bg-white transition-all duration-300"
                             />
@@ -65,29 +136,27 @@ export default function Catalogo() {
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
+                        <CustomSelect
+                            label="Fecha"
+                            value={dateSort}
+                            options={[
+                                { value: 'Nuevo', label: 'Nuevo' },
+                                { value: 'Antiguo', label: 'Antiguo' }
+                            ]}
+                            onChange={(val) => setDateSort(val)}
+                            className="w-48"
+                        />
 
-
-
-
-                        <select
-                            value=""
-                            onChange={(e) => setDateLabel(`Fecha de publicación: ${e.target.value}`)}
-                            className="bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#C9A24D] shadow-sm cursor-pointer"
-                        >
-                            <option value="" disabled hidden>{dateLabel}</option>
-                            <option value="Nuevo">Nuevo</option>
-                            <option value="Antiguo">Antiguo</option>
-                        </select>
-
-                        <select
-                            value=""
-                            onChange={(e) => setPriceLabel(`Precio: ${e.target.value}`)}
-                            className="bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#C9A24D] shadow-sm cursor-pointer"
-                        >
-                            <option value="" disabled hidden>{priceLabel}</option>
-                            <option value="Menor precio">Menor precio</option>
-                            <option value="Mayor precio">Mayor precio</option>
-                        </select>
+                        <CustomSelect
+                            label="Precio"
+                            value={priceSort}
+                            options={[
+                                { value: 'Menor precio', label: 'Menor precio' },
+                                { value: 'Mayor precio', label: 'Mayor precio' }
+                            ]}
+                            onChange={(val) => setPriceSort(val)}
+                            className="w-48"
+                        />
 
                         <div className="flex bg-white rounded-lg shadow-sm border border-gray-200 p-1">
                             <button
@@ -103,9 +172,6 @@ export default function Catalogo() {
                                 <ListIcon size={20} />
                             </button>
                         </div>
-
-
-
                     </div>
                 </div>
 
@@ -118,16 +184,18 @@ export default function Catalogo() {
                                 <h2>Filtros</h2>
                             </div>
 
-                            {FILTERS.map((filter) => {
-                                const isExpanded = expandedFilters.includes(filter.title);
+                            {CATALOG_FILTERS.map((section) => {
+                                const isExpanded = expandedFilters.includes(section.title);
+                                const selectedItems = (filters as any)[section.key] as string[];
+
                                 return (
-                                    <div key={filter.title} className="mb-6 last:mb-0">
+                                    <div key={section.title} className="mb-6 last:mb-0">
                                         <button
-                                            onClick={() => toggleFilter(filter.title)}
+                                            onClick={() => toggleFilterSection(section.title)}
                                             className="flex items-center justify-between w-full text-left group mb-3"
                                         >
                                             <span className="font-semibold text-gray-800 group-hover:text-[#C9A24D] transition-colors">
-                                                {filter.title}
+                                                {section.title}
                                             </span>
                                             <ChevronDown
                                                 size={16}
@@ -136,13 +204,13 @@ export default function Catalogo() {
                                         </button>
                                         <div className={`overflow-hidden transition-all duration-300 ${isExpanded ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}>
                                             <ul className="space-y-2 pl-1 pb-1">
-                                                {filter.items.map((item) => (
+                                                {section.items.map((item: string) => (
                                                     <li key={item} className="flex items-center gap-2">
                                                         <input
                                                             type="checkbox"
                                                             id={item}
-                                                            checked={selectedFilters.includes(item)}
-                                                            onChange={() => handleFilterChange(item)}
+                                                            checked={selectedItems.includes(item)}
+                                                            onChange={() => handleFilterChange(section.key, item)}
                                                             className="w-4 h-4 rounded border-gray-300 text-[#C9A24D] focus:ring-[#C9A24D]"
                                                         />
                                                         <label htmlFor={item} className="text-sm text-gray-600 cursor-pointer hover:text-[#C9A24D] transition-colors">
@@ -157,7 +225,7 @@ export default function Catalogo() {
                             })}
 
                             <button
-                                onClick={clearFilters}
+                                onClick={resetFilters}
                                 className="w-full mt-6 py-2 px-4 bg-[#1F140D] text-white rounded-lg text-sm font-semibold hover:bg-black transition-colors"
                             >
                                 Limpiar filtros
@@ -167,40 +235,45 @@ export default function Catalogo() {
 
                     {/* Main Content (Grid/List) */}
                     <main className="lg:w-3/4">
-                        <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'}`}>
-                            {HORSES.map((horse) => (
-                                <Link href={`/equino/catalogo/${horse.id}`} key={horse.id} className="block">
-                                    <div className={`bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 overflow-hidden group cursor-pointer ${viewMode === 'list' ? 'flex' : 'h-full flex flex-col'}`}>
-                                        <div className={`${viewMode === 'list' ? 'w-1/3' : 'h-64'} relative border-b border-gray-100`}>
-                                            <img
-                                                src={horse.images[0]}
-                                                alt={horse.name}
-                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                            />
-                                            <div className="absolute top-3 left-3 flex gap-2">
-                                                <span className="bg-white/90 backdrop-blur-sm text-[#1F140D] text-[10px] font-bold px-2 py-1 rounded-md shadow-sm uppercase tracking-wider">
-                                                    {horse.category}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div className="p-5 flex flex-col flex-1">
-                                            <div className="mb-2">
-                                                <span className="text-2xl font-bold text-[#1F140D]">{horse.price}</span>
-                                            </div>
-                                            <h3 className="text-gray-800 font-medium line-clamp-2 mb-3 leading-snug group-hover:text-[#C9A24D] transition-colors">
-                                                {horse.name}
-                                            </h3>
-
-                                            <div className="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between text-xs text-gray-500">
-                                                <span>{horse.breed}</span>
-                                                <span>{horse.location}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
+                        {isLoading ? (
+                            <div className="flex flex-col items-center justify-center p-12 bg-white rounded-xl shadow-sm border border-gray-100 h-full min-h-[400px]">
+                                <Loader2 size={48} className="text-[#C9A24D] animate-spin mb-4" />
+                                <h3 className="text-xl font-medium text-gray-700">Cargando catálogo...</h3>
+                            </div>
+                        ) : filteredHorses.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center p-12 bg-white rounded-xl shadow-sm border border-gray-100 h-full min-h-[400px]">
+                                <div className="text-[#C9A24D] mb-4">
+                                    <Heart size={64} className="opacity-50" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-[#1F140D] mb-2">No se encontraron resultados</h3>
+                                <p className="text-gray-500 text-center max-w-md mb-6">
+                                    Intenta ajustar tus filtros o búsqueda para encontrar lo que estás buscando.
+                                </p>
+                                {showFavoritesOnly && (
+                                    <Link
+                                        href="/equino/catalogo"
+                                        className="px-6 py-3 bg-[#1F140D] text-white rounded-lg font-semibold hover:bg-black transition-colors shadow-md"
+                                    >
+                                        Ir al Catálogo
+                                    </Link>
+                                )}
+                            </div>
+                        ) : (
+                            <>
+                                <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'}`}>
+                                    {filteredHorses.map((horse) => (
+                                        <HorseCard key={horse.id} horse={horse} viewMode={viewMode} />
+                                    ))}
+                                </div>
+                                <Pagination
+                                    totalPages={totalPages}
+                                    currentPage={currentPage}
+                                    onPageChange={setPage}
+                                    totalElements={totalElements}
+                                    pageSize={pageSize}
+                                />
+                            </>
+                        )}
                     </main>
                 </div>
             </div>

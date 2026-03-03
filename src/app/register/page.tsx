@@ -12,7 +12,11 @@ export default function Register() {
 
   const [showPassword, setShowPassword] = useState(false);
   const { removeToken } = authStore()
-  removeToken()
+
+  React.useEffect(() => {
+    removeToken();
+  }, [removeToken]);
+
   const {
     errors,
     form,

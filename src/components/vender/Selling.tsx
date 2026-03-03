@@ -13,30 +13,26 @@ interface FormsProps {
 }
 
 const Selling = () => {
+  const [image1 , setImage1] = useState<File | null>(null);
+  const [image2 , setImage2] = useState<File | null>(null)
 
   const [preview , setPreview] = useState<string | null>(null);
   const [preview1 , setPreview1] = useState<string | null>(null);
 
   const handleImagenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    if(!e.target.files) return;
 
-    if(file) {
-      const imageURL = URL.createObjectURL(file);
-      setPreview(imageURL);
-    }
-
-    
+    const file = e.target.files[0];
+    setImage1(file);
+    setPreview(URL.createObjectURL(file))
   }
 
   const handleImagenChange1 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-
-    if(file) {
-      const imageURL = URL.createObjectURL(file);
-      setPreview1(imageURL);
-    }
-
+    if(!e.target.files) return;
     
+    const file = e.target.files[0];
+    setImage2(file);
+    setPreview1(URL.createObjectURL(file))
   }
   
   const handleDelete = () => {
@@ -82,12 +78,14 @@ const Selling = () => {
 
   e.preventDefault()
 
-  if (!raza || !price || !edad || !description || !preview  || !preview1|| !gender || !temperature || !discipline || !discountPrice || !location || !videoID) {
+  if (!raza || !price || !edad || !description || !image1  || !image2 || !gender || !temperature || !discipline || !discountPrice || !location || !videoID) {
     toast.error("Faltan campos que completar");
     return;
   }
 
-  const dataHorse = {
+  try {
+
+  await sellHorse({
   breed: raza,
   age: Number(edad),
   gender: gender,
@@ -97,17 +95,9 @@ const Selling = () => {
   discountPrice: Number(discountPrice),
   location: location,
   description: description,
-  imageIds: ["horse_img_1", "horse_img_2"],
-  //[
-    //[preview],
-    //[preview1]
-  //],
+  files: [image1 , image2],
   videoId: videoID
-}
-
-  try {
-  
-  await sellHorse(dataHorse)
+  })
     
     Swal.fire({
     title: "Publicado!",
@@ -236,7 +226,7 @@ const Selling = () => {
 
 
           <input
-            id="file-upload"
+            id="file-upload-1"
             type="file"
             accept="image/*"
             className="sr-only"
@@ -292,7 +282,7 @@ const Selling = () => {
 
 
           <input
-            id="file-upload"
+            id="file-upload-2"
             type="file"
             accept="image/*"
             className="sr-only"

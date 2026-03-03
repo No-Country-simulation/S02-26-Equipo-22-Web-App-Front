@@ -1,5 +1,6 @@
 //import {Selling} from ".././components/vender/Selling"
 
+import { data } from "@/mock/mock";
 import { METHODS } from "http";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,12 +18,47 @@ const sellHorse = async (formData: any) => {
         token = parsed.access_token;
     }
 
+
+
+//LA PETICIÓN AL CLOUDINARY
+    const uploadImageToCloudinary = async (file: File) => {
+
+    const imageData = new FormData ();
+
+    imageData.append("file" , file);
+    imageData.append("upload_preset" , "horses_upload");
+
+    const response = await fetch('https://api.cloudinary.com/v1_1/djzndosa5/image/upload' , {
+    method:'POST',
+    body: imageData,
+    })
+
+    if(!response.ok) {
+        throw new Error('Error subiendo imagen a Cloudinary');
+    }
+
+    const data = await response.json();
+    return data.secure_url;
+    
+    }
+
+    console.log("Cloudinary image" , data);
+
     try {
+    
+        const uploadedImageUrls =  [];
+
+        for(let file of formData.files) {
+            if(!file) continue;
+            const url = await uploadImageToCloudinary(file);
+            uploadedImageUrls.push(url);
+        }
 
         const extractYoutubeId = (url: string) => {
         const match = url.match(/v=([^&]+)/);
         return match ? match[1] : url;
     };
+
 
         console.log("FORM DATA:", formData);
         const dataToSend = {
@@ -34,7 +70,7 @@ const sellHorse = async (formData: any) => {
             price: Number(formData.price),
             location: formData.location,
             description: formData.description,
-            imageIds: formData.imageIds,
+            imageIds: uploadedImageUrls,
             videoId: formData.videoId
             ? extractYoutubeId(formData.videoId)
             : null,
@@ -49,7 +85,7 @@ const sellHorse = async (formData: any) => {
                 'Content-Type': 'application/json',
                 'Authorization' : `Bearer ${token}`
             },
-            body: JSON.stringify(dataToSend),
+            body: JSON.stringify(dataToSend)
         })
 
         if(!response.ok) {
@@ -59,8 +95,10 @@ const sellHorse = async (formData: any) => {
         const data = await response.json();
         console.log('Datos del caballo' , data);
         
-        return data;
+        
+        return data
 
+        
     } catch(error) {
         console.error("Error al vender el caballo" , error)
         throw error;

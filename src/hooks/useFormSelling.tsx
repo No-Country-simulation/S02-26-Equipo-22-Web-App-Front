@@ -38,11 +38,10 @@ const sellHorse = async (formData: any) => {
     }
 
     const data = await response.json();
+    console.log("Cloudinary image" , data);
     return data.secure_url;
     
     }
-
-    console.log("Cloudinary image" , data);
 
     try {
     

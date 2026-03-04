@@ -1,10 +1,7 @@
 //import {Selling} from ".././components/vender/Selling"
 
-<<<<<<< HEAD
 import { data } from "@/mock/mock";
-=======
 import { endpoint_selling } from "@/service/api-general";
->>>>>>> f9f2ebf9c781e64e8047e13e4f04fa1696efec65
 import { METHODS } from "http";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";

@@ -1,7 +1,5 @@
-"use client";
-
 import HorseGrid from "@/components/landing/HorseGrid";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function Novedades() {
@@ -10,7 +8,6 @@ export default function Novedades() {
             {/* Banner Section */}
             <div className="relative bg-[#1F140D] text-white py-24 px-6 overflow-hidden">
                 <div className="absolute inset-0 opacity-20">
-                    {/* Decorative pattern/texture could go here if available, fallback to pure color with a subtle radial gradient */}
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,162,77,0.15),transparent_50%)]" />
                 </div>
 
@@ -28,10 +25,6 @@ export default function Novedades() {
                     <div className="flex gap-4">
                         <a
                             href="#ultimos-ingresos"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                document.getElementById('ultimos-ingresos')?.scrollIntoView({ behavior: 'smooth' });
-                            }}
                             className="bg-[#C9A24D] hover:bg-[#b08d42] text-white px-8 py-3 rounded-lg font-medium transition-colors flex items-center gap-2 cursor-pointer"
                         >
                             Ver Últimos Ingresos
@@ -45,7 +38,6 @@ export default function Novedades() {
             <div id="ultimos-ingresos" className="pt-8 pb-16 space-y-12 scroll-mt-20">
                 <HorseGrid title="Últimos Caballos Agregados" />
 
-                {/* Secondary Highlight Section if desired */}
                 <div className="container mx-auto px-4 mt-12 mb-4">
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
                         <div className="max-w-xl">

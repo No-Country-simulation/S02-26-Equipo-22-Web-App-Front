@@ -48,7 +48,7 @@ export default async function HorseGrid({ title }: { title: string }) {
                                         <div className="h-56 relative border-b border-gray-100 bg-gray-100 flex-shrink-0">
                                             {horse.imageIds && horse.imageIds.length > 0 ? (
                                                 <img
-                                                    src={horse.imageIds[0]}
+                                                    src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'demo'}/image/upload/c_fill,w_600,h_450/${horse.imageIds[0]}`}
                                                     alt={horse.breed}
                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                 />

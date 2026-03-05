@@ -1,45 +1,43 @@
 import { create } from "zustand";
+import { User } from "@/types/types";
 
-export interface Tokens {
+export interface AuthData {
   access_token: string;
+  user: User | null;
 }
 
 interface AuthStore {
-  token: Tokens | null;
-  setToken: (token: Tokens) => void;
+  token: AuthData | null;
+  setToken: (data: AuthData) => void;
   removeToken: () => void;
 }
 
-const getTokenFromStorage = (): Tokens | null => {
+const AUTH_STORAGE_KEY = "horsetrust_auth";
+
+const getAuthFromStorage = (): AuthData | null => {
   if (typeof window === "undefined") return null;
-  // si el token no existe, se retorna null
   try {
-    // se intenta obtener el token
-    const stored = window.localStorage.getItem("access_token");
+    const stored = window.localStorage.getItem(AUTH_STORAGE_KEY);
     if (!stored) return null;
-    return JSON.parse(stored) as Tokens;
+    return JSON.parse(stored) as AuthData;
   } catch (error) {
-    console.warn("Failed to parse token from localStorage:", error);
-    // si es un token expirado o invalido, se elimina para que no crashee la pagina
-    window.localStorage.removeItem("access_token");
+    console.warn("Failed to parse auth from localStorage:", error);
+    window.localStorage.removeItem(AUTH_STORAGE_KEY);
     return null;
   }
 };
 
-// se crea el store
 export const authStore = create<AuthStore>()((set) => ({
-  token: getTokenFromStorage(),
-  // se crea la funcion para setear el token
-  setToken: (token: Tokens) => {
+  token: getAuthFromStorage(),
+  setToken: (data: AuthData) => {
     if (typeof window !== "undefined") {
-      window.localStorage.setItem("access_token", JSON.stringify(token));
+      window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(data));
     }
-    set({ token });
+    set({ token: data });
   },
-  // funcion para eliminar el token
   removeToken: () => {
     if (typeof window !== "undefined") {
-      window.localStorage.removeItem("access_token");
+      window.localStorage.removeItem(AUTH_STORAGE_KEY);
     }
     set({ token: null });
   },

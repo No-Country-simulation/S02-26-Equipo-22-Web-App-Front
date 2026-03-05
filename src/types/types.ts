@@ -12,7 +12,6 @@ export interface namesFormulariRegister {
   lastname: string;
   email: string;
   password: string;
-  rol: string;
 }
 export interface namesFormulariLogin {
   email: string;
@@ -63,6 +62,5 @@ export interface User {
   email: string;
   number: string | null;
   address: string | null;
-  rol: string;
   createdAt: string;
 }

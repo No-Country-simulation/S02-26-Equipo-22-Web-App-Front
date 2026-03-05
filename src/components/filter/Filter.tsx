@@ -1,13 +1,14 @@
+"use client";
 import { useId } from "react";
 import { ConditionsFilter } from "./ConditionsFilter";
 
 const Filter = () => {
 
-    interface TypesData {
-        id: number
-        op: string
-        valor: string
-    }
+  interface TypesData {
+    id: number
+    op: string
+    valor: string
+  }
 
 
   const categoryFilterId = useId();
@@ -29,7 +30,7 @@ const Filter = () => {
       masComprado: "moresale",
     },
     {
-      id:3,
+      id: 3,
       op: "en stock",
       stock: 0
     }
@@ -49,8 +50,7 @@ const Filter = () => {
     //   valor: "Anthelios",
     // },
   ];
-  const { pathname} = location
-  console.log(pathname)
+
   return (
     <section className="bg-[#F9F9F9] dark:bg-dark-theme ">
       <div className="  w-full  mx-auto h-[10vh] pb-4 max-w-maximo-ancho  ">
@@ -61,7 +61,7 @@ const Filter = () => {
             action="/send/"
           >
             <p className="flex items-center opacity-70">
-              
+
             </p>
 
             <div className="">

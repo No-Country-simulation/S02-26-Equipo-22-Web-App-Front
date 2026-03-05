@@ -11,7 +11,7 @@ export interface Horse {
     location: string;
     description?: string;
     imageIds: string[];
-    videoId?: string;
+    videoUrl?: string;
     status: 'PENDING_DATA' | 'PENDING_VERIFICATION' | 'VERIFIED' | 'REJECTED';
     ownerId: number;
 }

@@ -47,12 +47,13 @@ export const useFormLogin = (namesFormulariLogin: namesFormulariLogin, validateF
         })
         // console.log(form);
         const res = await req.json() as LoginResponseType
-        
+
         console.log(req.status);
         if (req.status === 200) {
           console.log("peticion exitosa" + req.status);
           authStore.getState().setToken({
-            access_token: res.access_token
+            access_token: res.access_token,
+            user: res.user
           });
           router.push("/equino")
         } else if (req.status === 403) {

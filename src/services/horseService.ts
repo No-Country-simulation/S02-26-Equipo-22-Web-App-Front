@@ -48,5 +48,30 @@ export const horseService = {
             console.error(`Error fetching horse ${id}:`, error);
             throw error;
         }
+    },
+
+    createHorse: async (horseData: any, token: string): Promise<Horse> => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/horses`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(horseData),
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text().catch(() => "Could not read text");
+                console.error(`Error backend response (Status: ${response.status}):`, errorText);
+                throw new Error('Failed to create horse');
+            }
+
+            const data: Horse = await response.json();
+            return data;
+        } catch (error) {
+            console.error(`Error creating horse:`, error);
+            throw error;
+        }
     }
 };

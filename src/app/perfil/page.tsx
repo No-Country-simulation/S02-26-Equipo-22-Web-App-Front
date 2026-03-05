@@ -130,7 +130,7 @@ export default function MiPerfilPage() {
                                 <div className="inline-flex items-center px-3 py-1 bg-white/10 rounded-full border border-[#C9A24D]/30 backdrop-blur-sm">
                                     <Shield className="w-4 h-4 text-[#C9A24D] mr-2" />
                                     <span className="text-[#C9A24D] text-sm font-medium uppercase tracking-wider">
-                                        Usuario {user.rol}
+                                        Usuario
                                     </span>
                                 </div>
                             </div>

@@ -29,7 +29,7 @@ export default function HorseCard({ horse, viewMode = 'grid' }: HorseCardProps) 
                     {/* Assuming Cloudinary or simple img for now. If using a specific Cloudinary comp, update here. */
                         horse.imageIds && horse.imageIds.length > 0 ? (
                             <img
-                                src={horse.imageIds[0]}
+                                src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'demo'}/image/upload/c_fill,w_600,h_450/${horse.imageIds[0]}`}
                                 alt={`${horse.breed} - ${horse.id}`}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/400x300?text=Horse+Image' }}

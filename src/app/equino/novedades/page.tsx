@@ -1,7 +1,7 @@
 "use client";
 
 import HorseGrid from "@/components/landing/HorseGrid";
-import { Sparkles, ArrowRight } from "lucide-react";
+import {  ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function Novedades() {

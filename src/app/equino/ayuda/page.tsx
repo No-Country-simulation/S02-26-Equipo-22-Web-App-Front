@@ -330,7 +330,7 @@ export default function HelpPage() {
             Nuestro equipo está aquí para ayudarle a comprar con confianza.
           </p>
         </div>
-        <button className="mt-8 inline-flex items-center justify-center gap-2 bg-[#C9A24D] text-white font-semibold py-4 px-8 rounded-xl hover:bg-[#B8913C] transition-all duration-300 hover:shadow-lg hover:shadow-[#C9A24D]/25 group w-full md:w-auto">
+        <button  className="mt-8 inline-flex items-center justify-center gap-2 bg-[#C9A24D] text-white font-semibold py-4 px-8 rounded-xl hover:bg-[#B8913C] transition-all duration-300 hover:shadow-lg hover:shadow-[#C9A24D]/25 group w-full md:w-auto">
           Contáctanos
           <ArrowRight
             size={18}

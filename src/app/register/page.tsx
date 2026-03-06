@@ -12,7 +12,11 @@ export default function Register() {
 
   const [showPassword, setShowPassword] = useState(false);
   const { removeToken } = authStore()
-  removeToken()
+
+  React.useEffect(() => {
+    removeToken();
+  }, [removeToken]);
+
   const {
     errors,
     form,
@@ -186,31 +190,7 @@ export default function Register() {
                     )}
                   </div>
                 </div>
-                <div>
-                  <label
-                    htmlFor="rol"
-                    className="block text-sm/6 font-medium text-gray-100"
-                    style={{ color: "black" }}
-                  >
-                    Rol
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      id="rol"
-                      type="text"
-                      value={form.rol}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="rol"
-                      required
-                      autoComplete="off"
-                      className="block w-full rounded-md bg-black/5 px-3 py-1.5 text-base text-black outline-1 -outline-offset-1 outline-black/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
-                    />
-                    {errors.rol && (
-                      <p className="text-red-400 my-0">{errors.rol}</p>
-                    )}
-                  </div>
-                </div>
+
                 <Link href="/login" className="link">
                   o inicia sesion
                 </Link>

@@ -16,8 +16,7 @@ export const namesFormulariRegister = {
     name: "",
     lastname: "",
     email: "",
-    password: "",
-    rol: ""
+    password: ""
 };
 export const namesFormulariLogin = {
     email: "",
@@ -115,8 +114,8 @@ export const horses = [
         shipping: ''
     }
 ];
-export type FormValuesRegister = typeof namesFormulariRegister;
+export type FormValues = typeof namesFormulariRegister;
 export type FormValuesLogin = typeof namesFormulariLogin;
 
-export type FormErrorsRegister = Partial<Record<keyof FormValuesRegister, string>>;
+export type FormErrors = Partial<Record<keyof FormValues, string>>;
 export type FormErrorsLogin = Partial<Record<keyof FormValuesLogin, string>>;

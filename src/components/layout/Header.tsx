@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { Search, Menu, User, Settings, MessageSquare, Heart } from 'lucide-react';
 import { useChatStore } from '@/store/useChatStore';
+import { authStore } from '@/store/token-store';
 
 const path = "/equino"
 const navLinksLeft = [
@@ -26,7 +27,24 @@ export default function Header() {
     const pathname = usePathname();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
-    const { currentUsername, toggleChat } = useChatStore();
+    const { toggleChat } = useChatStore();
+
+    const [auth, setAuth] = useState<any>(null);
+
+    useEffect(() => {
+        // Establecer el estado inicial en el cliente
+        setAuth(authStore.getState().token);
+
+        // Suscribirse a cambios
+        const unsubscribe = authStore.subscribe((state) => {
+            setAuth(state.token);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    const userName = auth?.user?.name || "User";
+
     const profileRef = useRef<HTMLDivElement>(null);
 
     // Cerrar el dropdown al hacer clic fuera
@@ -81,7 +99,7 @@ export default function Header() {
                             className="h-14 md:h-16 w-auto object-contain drop-shadow-[0_0_15px_rgba(201,162,77,0.3)]"
                         />
                         <span className="text-2xl md:text-3xl font-bold text-white tracking-tight drop-shadow-md">
-                            Equi<span className="font-light text-[#C9A24D]">Trust</span>
+                            Horse<span className="font-light text-[#C9A24D]">Trust</span>
                         </span>
                     </Link>
 
@@ -94,70 +112,80 @@ export default function Header() {
 
                     {/* Acciones de usuario - Desktop */}
                     <div className="hidden md:flex items-center gap-5 text-sm text-white">
-                        <Link href="/register" className="hover:text-[#C9A24D] transition-colors">
-                            Crea tu cuenta
-                        </Link>
-                        <Link href="/login" className="font-semibold hover:text-[#C9A24D] transition-colors">
-                            Ingresá
-                        </Link>
-
-                        {/* Contenedor del Perfil de Usuario con Dropdown */}
-                        <div className="relative" ref={profileRef}>
-                            <button
-                                onClick={() => setIsProfileOpen(!isProfileOpen)}
-                                className="flex items-center gap-2 hover:text-[#C9A24D] transition-colors group p-2"
-                            >
-                                <div className="bg-white/10 p-2 rounded-full group-hover:bg-[#C9A24D] group-hover:text-white transition-all duration-300">
-                                    <User size={20} strokeWidth={2} />
-                                </div>
-                                <span className="font-medium group-hover:text-[#C9A24D] transition-colors hidden lg:block">
-                                    {currentUsername || "User"}
-                                </span>
-                            </button>
-
-                            {/* Dropdown Menu */}
-                            {isProfileOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden py-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                                    <div className="px-4 py-2 border-b border-gray-100 mb-2 block lg:hidden">
-                                        <p className="text-sm font-semibold text-gray-800 truncate">{currentUsername || "User"}</p>
+                        {!auth ? (
+                            <>
+                                <Link href="/register" className="hover:text-[#C9A24D] transition-colors">
+                                    Crea tu cuenta
+                                </Link>
+                                <Link href="/login" className="font-semibold hover:text-[#C9A24D] transition-colors">
+                                    Ingresá
+                                </Link>
+                            </>
+                        ) : (
+                            /* Contenedor del Perfil de Usuario con Dropdown */
+                            <div className="relative" ref={profileRef}>
+                                <button
+                                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                                    className="flex items-center gap-2 hover:text-[#C9A24D] transition-colors group p-2"
+                                >
+                                    <div className="bg-white/10 p-2 rounded-full group-hover:bg-[#C9A24D] group-hover:text-white transition-all duration-300">
+                                        <User size={20} strokeWidth={2} />
                                     </div>
-                                    <Link
-                                        href="/perfil"
-                                        onClick={() => setIsProfileOpen(false)}
-                                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#C9A24D] transition-colors"
-                                    >
-                                        <Settings size={16} />
-                                        <span>Mi perfil</span>
-                                    </Link>
-                                    <button
-                                        onClick={() => {
-                                            setIsProfileOpen(false);
-                                            toggleChat();
-                                        }}
-                                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#C9A24D] transition-colors text-left"
-                                    >
-                                        <MessageSquare size={16} />
-                                        <span>Chat</span>
-                                    </button>
-                                    <Link
-                                        href="/equino/guardados"
-                                        onClick={() => setIsProfileOpen(false)}
-                                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#C9A24D] transition-colors"
-                                    >
-                                        <Heart size={16} />
-                                        <span>Guardado</span>
-                                    </Link>
-                                    <div className="border-t border-gray-100 mt-2 pt-2">
-                                        <button
-                                            className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                                            onClick={() => router.push("/login")}
+                                    <span className="font-medium group-hover:text-[#C9A24D] transition-colors hidden lg:block">
+                                        {userName}
+                                    </span>
+                                </button>
+
+                                {/* Dropdown Menu */}
+                                {isProfileOpen && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                                        <div className="px-4 py-2 border-b border-gray-100 mb-2 block lg:hidden">
+                                            <p className="text-sm font-semibold text-gray-800 truncate">
+                                                {userName}
+                                            </p>
+                                        </div>
+                                        <Link
+                                            href="/equino/perfil"
+                                            onClick={() => setIsProfileOpen(false)}
+                                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#C9A24D] transition-colors"
                                         >
-                                            Cerrar sesión
+                                            <Settings size={16} />
+                                            <span>Mi perfil</span>
+                                        </Link>
+                                        <button
+                                            onClick={() => {
+                                                setIsProfileOpen(false);
+                                                toggleChat();
+                                            }}
+                                            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#C9A24D] transition-colors text-left"
+                                        >
+                                            <MessageSquare size={16} />
+                                            <span>Chat</span>
                                         </button>
+                                        <Link
+                                            href="/equino/guardados"
+                                            onClick={() => setIsProfileOpen(false)}
+                                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#C9A24D] transition-colors"
+                                        >
+                                            <Heart size={16} />
+                                            <span>Guardado</span>
+                                        </Link>
+                                        <div className="border-t border-gray-100 mt-2 pt-2">
+                                            <button
+                                                className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                                                onClick={() => {
+                                                    setIsProfileOpen(false);
+                                                    authStore.getState().removeToken();
+                                                    router.push("/login");
+                                                }}
+                                            >
+                                                Cerrar sesión
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            )}
-                        </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -174,7 +202,7 @@ export default function Header() {
                 </div>
             </div>
 
-    
+
             <div className="hidden md:block border-t border-white/10 ">
                 <div className="w-full px-6">
                     <nav className="flex items-center justify-between">

@@ -16,8 +16,12 @@
             "description": "User management endpoints"
         },
         {
+            "name": "Chat History",
+            "description": "REST API for chat history"
+        },
+        {
             "name": "Veterinary Records",
-            "description": "API para la gestión de registros veterinarios de un caballo"
+            "description": "API for managing veterinary records of a horse"
         },
         {
             "name": "Horses",
@@ -61,7 +65,7 @@
                 },
                 "security": [
                     {
-                        "Bearer Authentication": []
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -87,7 +91,7 @@
                 },
                 "security": [
                     {
-                        "Bearer Authentication": []
+                        "bearerAuth": []
                     }
                 ]
             },
@@ -121,7 +125,7 @@
                 },
                 "security": [
                     {
-                        "Bearer Authentication": []
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -160,140 +164,9 @@
                 },
                 "security": [
                     {
-                        "Bearer Authentication": []
+                        "bearerAuth": []
                     }
                 ]
-            }
-        },
-        "/api/v1/horses/{id}": {
-            "get": {
-                "tags": [
-                    "Horses"
-                ],
-                "summary": "Get horse by ID",
-                "description": "Retrieves details of a specific horse by its ID.",
-                "operationId": "getHorseById",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Horse found",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HorseResponseDTO"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Horse not found",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HorseResponseDTO"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Horses"
-                ],
-                "summary": "Update horse",
-                "description": "Updates an existing horse.",
-                "operationId": "updateHorse",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateHorseDTO"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Horse updated successfully",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HorseResponseDTO"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid input data",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HorseResponseDTO"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Horse or owner not found",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HorseResponseDTO"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Horses"
-                ],
-                "summary": "Delete horse (Soft delete)",
-                "description": "Deletes a horse by marking it as deleted.",
-                "operationId": "deleteHorse",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Horse deleted successfully"
-                    },
-                    "404": {
-                        "description": "Horse not found"
-                    }
-                }
             }
         },
         "/api/v1/horses": {
@@ -417,6 +290,14 @@
                         }
                     },
                     {
+                        "name": "search",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Zero-based page index (0..N)",
@@ -525,7 +406,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/horses/{horseId}/records": {
@@ -533,7 +419,8 @@
                 "tags": [
                     "Veterinary Records"
                 ],
-                "summary": "Obtener todos los registros veterinarios de un caballo",
+                "summary": "Get all veterinary records",
+                "description": "Returns all veterinary records associated with a specific horse.",
                 "operationId": "getAllRecords",
                 "parameters": [
                     {
@@ -548,7 +435,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Lista de registros obtenida correctamente",
+                        "description": "Records retrieved successfully",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -566,7 +453,8 @@
                 "tags": [
                     "Veterinary Records"
                 ],
-                "summary": "Crear registro veterinario",
+                "summary": "Create a veterinary record",
+                "description": "Creates a new veterinary record for a specific horse. Only the owner or an admin can perform this action.",
                 "operationId": "createVeterinaryRecord",
                 "parameters": [
                     {
@@ -591,7 +479,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Registro creado con éxito",
+                        "description": "Record created successfully",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -601,7 +489,17 @@
                         }
                     },
                     "400": {
-                        "description": "Datos inválidos",
+                        "description": "Invalid input data",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VeterinaryRecordResponseDTO"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -611,7 +509,7 @@
                         }
                     },
                     "404": {
-                        "description": "Caballo no encontrado",
+                        "description": "Horse not found",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -620,7 +518,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/auth/register": {
@@ -685,12 +588,154 @@
                 }
             }
         },
+        "/api/v1/horses/{id}": {
+            "get": {
+                "tags": [
+                    "Horses"
+                ],
+                "summary": "Get horse by ID",
+                "description": "Retrieves details of a specific horse by its ID.",
+                "operationId": "getHorseById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Horse found",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HorseResponseDTO"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Horse not found",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HorseResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Horses"
+                ],
+                "summary": "Delete horse (Soft delete)",
+                "description": "Deletes a horse by marking it as deleted.",
+                "operationId": "deleteHorse",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Horse deleted successfully"
+                    },
+                    "404": {
+                        "description": "Horse not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Horses"
+                ],
+                "summary": "Update horse",
+                "description": "Updates an existing horse.",
+                "operationId": "updateHorse",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateHorseDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Horse updated successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HorseResponseDTO"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input data",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HorseResponseDTO"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Horse or owner not found",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HorseResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/horses/{horseId}/records/{recordId}": {
             "get": {
                 "tags": [
                     "Veterinary Records"
                 ],
-                "summary": "Obtener registro veterinario por ID",
+                "summary": "Get a veterinary record by ID",
+                "description": "Returns a specific veterinary record by its ID.",
                 "operationId": "getRecordById",
                 "parameters": [
                     {
@@ -714,7 +759,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Registro encontrado",
+                        "description": "Record found",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -724,7 +769,7 @@
                         }
                     },
                     "404": {
-                        "description": "Registro o caballo no encontrado",
+                        "description": "Record or horse not found",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -739,7 +784,8 @@
                 "tags": [
                     "Veterinary Records"
                 ],
-                "summary": "Eliminar registro veterinario",
+                "summary": "Delete a veterinary record",
+                "description": "Deletes a veterinary record. Only the owner or an admin can perform this action.",
                 "operationId": "deleteRecord",
                 "parameters": [
                     {
@@ -763,18 +809,27 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "Registro eliminado correctamente"
+                        "description": "Record deleted successfully"
+                    },
+                    "403": {
+                        "description": "Access denied"
                     },
                     "404": {
-                        "description": "Registro o caballo no encontrado"
+                        "description": "Record or horse not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "patch": {
                 "tags": [
                     "Veterinary Records"
                 ],
-                "summary": "Actualizar registro veterinario",
+                "summary": "Update a veterinary record",
+                "description": "Updates an existing veterinary record. Only the owner or an admin can perform this action.",
                 "operationId": "updateRecord",
                 "parameters": [
                     {
@@ -808,7 +863,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Registro actualizado correctamente",
+                        "description": "Record updated successfully",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -818,7 +873,17 @@
                         }
                     },
                     "400": {
-                        "description": "Datos inválidos",
+                        "description": "Invalid input data",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VeterinaryRecordResponseDTO"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -828,7 +893,7 @@
                         }
                     },
                     "404": {
-                        "description": "Registro o caballo no encontrado",
+                        "description": "Record or horse not found",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -837,7 +902,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/users": {
@@ -864,7 +934,7 @@
                 },
                 "security": [
                     {
-                        "Bearer Authentication": []
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -901,7 +971,7 @@
                 },
                 "security": [
                     {
-                        "Bearer Authentication": []
+                        "bearerAuth": []
                     }
                 ]
             },
@@ -939,7 +1009,7 @@
                 },
                 "security": [
                     {
-                        "Bearer Authentication": []
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -975,7 +1045,7 @@
                 },
                 "security": [
                     {
-                        "Bearer Authentication": []
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -1011,7 +1081,73 @@
                 },
                 "security": [
                     {
-                        "Bearer Authentication": []
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/horses/{horseId}/chat/history/{buyerId}": {
+            "get": {
+                "tags": [
+                    "Chat History"
+                ],
+                "summary": "Get conversation history between buyer and horse owner",
+                "operationId": "getHistory",
+                "parameters": [
+                    {
+                        "name": "horseId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "buyerId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageChatMessage"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -1064,14 +1200,6 @@
                     },
                     "address": {
                         "type": "string"
-                    },
-                    "rol": {
-                        "type": "string",
-                        "enum": [
-                            "BUYER",
-                            "SELLER",
-                            "ADMIN"
-                        ]
                     },
                     "created_at": {
                         "type": "string",
@@ -1126,9 +1254,9 @@
                     "newPassword"
                 ]
             },
-            "UpdateHorseDTO": {
+            "CreateHorseDTO": {
                 "type": "object",
-                "description": "DTO for partially updating a horse (PATCH)",
+                "description": "DTO for creating a new horse",
                 "properties": {
                     "breed": {
                         "type": "string",
@@ -1139,7 +1267,7 @@
                         "type": "integer",
                         "format": "int32",
                         "description": "Horse age in years",
-                        "example": 6,
+                        "example": 5,
                         "maximum": 40,
                         "minimum": 0
                     },
@@ -1151,7 +1279,7 @@
                             "MARE",
                             "GELDING"
                         ],
-                        "example": "MARE"
+                        "example": "STALLION"
                     },
                     "temperament": {
                         "type": "string",
@@ -1161,7 +1289,7 @@
                             "MODERATE",
                             "ENERGIC"
                         ],
-                        "example": "ENERGETIC"
+                        "example": "CALM"
                     },
                     "discipline": {
                         "type": "string",
@@ -1174,46 +1302,57 @@
                             "RECREATIONAL",
                             "ENDURANCE"
                         ],
-                        "example": "DRESSAGE"
+                        "example": "SHOW_JUMPING"
                     },
                     "price": {
                         "type": "number",
-                        "description": "Base price",
-                        "example": 18000,
+                        "description": "Base price of the horse",
+                        "example": 15000,
                         "minimum": 0.01
                     },
                     "discountPrice": {
                         "type": "number",
-                        "description": "Discount price",
-                        "example": 15000,
+                        "description": "Optional discounted price",
+                        "example": 12000,
                         "minimum": 0.01
                     },
                     "location": {
                         "type": "string",
                         "description": "Horse location",
-                        "example": "Cordoba, Argentina"
+                        "example": "Buenos Aires, Argentina"
                     },
                     "description": {
                         "type": "string",
-                        "description": "Detailed description"
+                        "description": "Detailed description of the horse",
+                        "example": "Excellent jumper with competition experience"
                     },
                     "imageIds": {
                         "type": "array",
-                        "description": "Replace all image public IDs",
+                        "description": "List of Cloudinary image public IDs",
                         "example": [
-                            "new_img_1",
-                            "new_img_2"
+                            "horse_img_1",
+                            "horse_img_2"
                         ],
                         "items": {
                             "type": "string"
                         }
                     },
-                    "videoId": {
+                    "videoUrl": {
                         "type": "string",
-                        "description": "Cloudinary video public ID",
-                        "example": "updated_video_1"
+                        "description": "Youtube video url",
+                        "example": "https://www.youtube.com/watch?v=s_IPgb7rF-g"
                     }
-                }
+                },
+                "required": [
+                    "age",
+                    "breed",
+                    "discipline",
+                    "gender",
+                    "imageIds",
+                    "location",
+                    "price",
+                    "temperament"
+                ]
             },
             "HorseResponseDTO": {
                 "type": "object",
@@ -1304,10 +1443,10 @@
                             "type": "string"
                         }
                     },
-                    "videoId": {
+                    "videoUrl": {
                         "type": "string",
-                        "description": "Video public ID",
-                        "example": "horse_video_1"
+                        "description": "Youtube video url",
+                        "example": "https://www.youtube.com/watch?v=s_IPgb7rF-g"
                     },
                     "status": {
                         "type": "string",
@@ -1327,113 +1466,6 @@
                         "example": 1
                     }
                 }
-            },
-            "CreateHorseDTO": {
-                "type": "object",
-                "description": "DTO for creating a new horse",
-                "properties": {
-                    "breed": {
-                        "type": "string",
-                        "description": "Horse breed",
-                        "example": "Arabian"
-                    },
-                    "age": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Horse age in years",
-                        "example": 5,
-                        "maximum": 40,
-                        "minimum": 0
-                    },
-                    "gender": {
-                        "type": "string",
-                        "description": "Horse gender",
-                        "enum": [
-                            "STALLION",
-                            "MARE",
-                            "GELDING"
-                        ],
-                        "example": "STALLION"
-                    },
-                    "temperament": {
-                        "type": "string",
-                        "description": "Horse temperament",
-                        "enum": [
-                            "CALM",
-                            "MODERATE",
-                            "ENERGIC"
-                        ],
-                        "example": "CALM"
-                    },
-                    "discipline": {
-                        "type": "string",
-                        "description": "Horse discipline",
-                        "enum": [
-                            "RACING",
-                            "SHOW_JUMPING",
-                            "DRESSAGE",
-                            "POLO",
-                            "RECREATIONAL",
-                            "ENDURANCE"
-                        ],
-                        "example": "SHOW_JUMPING"
-                    },
-                    "price": {
-                        "type": "number",
-                        "description": "Base price of the horse",
-                        "example": 15000,
-                        "minimum": 0.01
-                    },
-                    "discountPrice": {
-                        "type": "number",
-                        "description": "Optional discounted price",
-                        "example": 12000,
-                        "minimum": 0.01
-                    },
-                    "location": {
-                        "type": "string",
-                        "description": "Horse location",
-                        "example": "Buenos Aires, Argentina"
-                    },
-                    "description": {
-                        "type": "string",
-                        "description": "Detailed description of the horse",
-                        "example": "Excellent jumper with competition experience"
-                    },
-                    "imageIds": {
-                        "type": "array",
-                        "description": "List of Cloudinary image public IDs",
-                        "example": [
-                            "horse_img_1",
-                            "horse_img_2"
-                        ],
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "videoId": {
-                        "type": "string",
-                        "description": "Cloudinary video public ID",
-                        "example": "horse_video_1"
-                    },
-                    "ownerId": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Owner user ID",
-                        "example": 1
-                    }
-                },
-                "required": [
-                    "age",
-                    "breed",
-                    "discipline",
-                    "gender",
-                    "imageIds",
-                    "location",
-                    "ownerId",
-                    "price",
-                    "temperament"
-                ]
             },
             "CreateVeterinaryRecordDTO": {
                 "type": "object",
@@ -1528,14 +1560,6 @@
                         "type": "string",
                         "maxLength": 500,
                         "minLength": 0
-                    },
-                    "rol": {
-                        "type": "string",
-                        "enum": [
-                            "BUYER",
-                            "SELLER",
-                            "ADMIN"
-                        ]
                     }
                 },
                 "required": [
@@ -1579,6 +1603,95 @@
                     "password"
                 ]
             },
+            "UpdateHorseDTO": {
+                "type": "object",
+                "description": "DTO for partially updating a horse (PATCH)",
+                "properties": {
+                    "breed": {
+                        "type": "string",
+                        "description": "Horse breed",
+                        "example": "Arabian"
+                    },
+                    "age": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Horse age in years",
+                        "example": 6,
+                        "maximum": 40,
+                        "minimum": 0
+                    },
+                    "gender": {
+                        "type": "string",
+                        "description": "Horse gender",
+                        "enum": [
+                            "STALLION",
+                            "MARE",
+                            "GELDING"
+                        ],
+                        "example": "MARE"
+                    },
+                    "temperament": {
+                        "type": "string",
+                        "description": "Horse temperament",
+                        "enum": [
+                            "CALM",
+                            "MODERATE",
+                            "ENERGIC"
+                        ],
+                        "example": "ENERGETIC"
+                    },
+                    "discipline": {
+                        "type": "string",
+                        "description": "Horse discipline",
+                        "enum": [
+                            "RACING",
+                            "SHOW_JUMPING",
+                            "DRESSAGE",
+                            "POLO",
+                            "RECREATIONAL",
+                            "ENDURANCE"
+                        ],
+                        "example": "DRESSAGE"
+                    },
+                    "price": {
+                        "type": "number",
+                        "description": "Base price",
+                        "example": 18000,
+                        "minimum": 0.01
+                    },
+                    "discountPrice": {
+                        "type": "number",
+                        "description": "Discount price",
+                        "example": 15000,
+                        "minimum": 0.01
+                    },
+                    "location": {
+                        "type": "string",
+                        "description": "Horse location",
+                        "example": "Cordoba, Argentina"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Detailed description"
+                    },
+                    "imageIds": {
+                        "type": "array",
+                        "description": "Replace all image public IDs",
+                        "example": [
+                            "new_img_1",
+                            "new_img_2"
+                        ],
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "videoUrl": {
+                        "type": "string",
+                        "description": "Youtube video url",
+                        "example": "https://www.youtube.com/watch?v=s_IPgb7rF-g"
+                    }
+                }
+            },
             "UpdateVeterinaryRecordDTO": {
                 "type": "object",
                 "properties": {
@@ -1617,12 +1730,12 @@
                     "last": {
                         "type": "boolean"
                     },
+                    "pageable": {
+                        "$ref": "#/components/schemas/PageableObject"
+                    },
                     "numberOfElements": {
                         "type": "integer",
                         "format": "int32"
-                    },
-                    "pageable": {
-                        "$ref": "#/components/schemas/PageableObject"
                     },
                     "size": {
                         "type": "integer",
@@ -1685,6 +1798,98 @@
                         "type": "boolean"
                     }
                 }
+            },
+            "ChatMessage": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "senderId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "receiverId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "horseId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "content": {
+                        "type": "string",
+                        "maxLength": 1000,
+                        "minLength": 0
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "horseId",
+                    "receiverId",
+                    "senderId"
+                ]
+            },
+            "PageChatMessage": {
+                "type": "object",
+                "properties": {
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "totalPages": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "first": {
+                        "type": "boolean"
+                    },
+                    "last": {
+                        "type": "boolean"
+                    },
+                    "pageable": {
+                        "$ref": "#/components/schemas/PageableObject"
+                    },
+                    "numberOfElements": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "size": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "content": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ChatMessage"
+                        }
+                    },
+                    "number": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "sort": {
+                        "$ref": "#/components/schemas/SortObject"
+                    },
+                    "empty": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
             }
         }
     }

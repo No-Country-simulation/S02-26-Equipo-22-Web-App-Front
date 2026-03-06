@@ -3,6 +3,7 @@ import axios from 'axios';
 
 // si no hay un  .env con la variable NEXT_PUBLIC_API_URL, se usa el localhost:3001
 export const API_URL = process.env.NEXT_PUBLIC_API_URL 
+export const API_CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
 console.log(API_URL);
 
 const api_error = () => {

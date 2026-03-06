@@ -15,7 +15,7 @@ export function SectionHome2 () {
                     Trabajamos para que cada operación sea clara, segura y profesional, respetando la tradición del mundo equino y acompañando su evolución digital.</p>
                     <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
                         <a href="#" style={{background: 'white' , padding:'3%', color:'black'}} className="text-sm/6 font-semibold text-white hover:text-gray-100">
-                        Learn more
+                        Leer más
                         <span aria-hidden="true">→</span>
                     </a>
                     </div>

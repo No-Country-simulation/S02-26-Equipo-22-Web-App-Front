@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { API_CLOUD } from '@/service/api-general';
 
 interface HorseGalleryProps {
     images: string[];
@@ -22,14 +23,21 @@ export default function HorseGallery({ images, category }: HorseGalleryProps) {
     return (
         <div className="bg-gray-100 relative min-h-[400px] h-full group overflow-hidden">
             {/* Images */}
-            {images.map((image, index) => (
-                <img
-                    key={index}
-                    src={image}
-                    alt={`Imagen ${index + 1} de ${category}`}
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out ${index === currentIndex ? 'opacity-100' : 'opacity-0'}`}
-                />
-            ))}
+            {images.map((image, index) => {
+                const isFullUrl = image.startsWith('http');
+                const imageUrl = isFullUrl
+                    ? image
+                    : `https://res.cloudinary.com/${API_CLOUD || 'demo'}/image/upload/c_fill,w_1200,h_800/${image}`;
+
+                return (
+                    <img
+                        key={index}
+                        src={imageUrl}
+                        alt={`Imagen ${index + 1} de ${category}`}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out ${index === currentIndex ? 'opacity-100' : 'opacity-0'}`}
+                    />
+                );
+            })}
 
             {/* Category Badge */}
             <div className="absolute top-4 left-4 flex gap-2 z-10">

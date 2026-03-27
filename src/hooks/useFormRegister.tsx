@@ -44,10 +44,10 @@ export const useFormRegister = (namesFormulariRegister: namesFormulariRegister, 
           }, body: JSON.stringify(form)
         })
 
-        if(req.status === 201){
+        if (req.status === 201) {
           router.push("/login")
-          console.log("peticion exitosa"+ req.status);
-        }else{
+          console.log("peticion exitosa" + req.status);
+        } else {
           console.log("hubo un fallo en la peticion", + req.status);
           throw Error
         }
@@ -56,10 +56,10 @@ export const useFormRegister = (namesFormulariRegister: namesFormulariRegister, 
         setLoading(false);
         console.log(res);
         return res
-        
+
       } catch (error) {
         setTimeout(() => setResponse(false), 5000);
-        
+
       }
 
     } else {
